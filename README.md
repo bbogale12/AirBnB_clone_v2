@@ -1,291 +1,154 @@
-![HBNB Cover Image](resources/hbnb-cover.png)
+# AirBnB Clone (HBNB)
 
-# Project HBNB: AirBnB Clone
-This is ALX/Holberton's project **AirBnB Clone**, as the title states it is cloning the AirBnB web application leading towards building full web application: the **AirBnB Clone**
+[![CodeStyle](https://github.com/B3zaleel/AirBnB_clone_v2/actions/workflows/codestyle.yml/badge.svg)](https://github.com/B3zaleel/AirBnB_clone_v2/actions/workflows/codestyle.yml)
+![Latest commit](https://img.shields.io/github/last-commit/B3zaleel/AirBnB_clone_v2/master?style=round-square)
 
-## Project Description
+## Description
 
-The current aim of the project is to build a terminal that is used to manage and test the objects of our project, such as:
+This repository contains the initial stage of a student project to build a clone of the AirBnB website. This stage implements a backend interface, or console, to manage program data. Console commands allow the user to create, update, and destroy objects, as well as manage file storage. Using a system of JSON serialization/deserialization, storage is persistent between sessions.
 
-* Create a new object (ex: a new User or a new Place)
-* Retrieve an object from a file, a database etc…
-* Diplaying an object or all objects from a file, a database etc…
-* Do operations on objects (count, compute stats, etc…)
-* Update attributes of an object
-* Destroy an object
+---
 
-### Classes
-
-| Name | Description |
-| --- | --- |
-| BaseModel | Defines all common attributes/methods for other classes |
-| FileStorage | Serializes instances to a JSON file and deserializes JSON file to instances |
-| User | Holds user information |
-| State | Holds state information |
-| City | Holds city information |
-| Amenity | Holds amenity information |
-| Place | Holds place information |
-| Review | Holds review information |
 
 ## The Command Interpreter
 
-The command interpreter is used to perform actions to objects of the classes mentioned above.
+The command interpreter provides a simple REPL (Read-Evaluate-Print-Loop) for interacting with the models in this project only. It can be used to test the functionality of the supported storage engines as well. You can find some examples of its usage [here](#examples).
 
-### Starting the Terminal
+### How To Use
 
-To run the command interpreter, execute the `console.py` file.
+1. First clone this repository.
 
+2. Once the repository is cloned locate the "[console.py](console.py)" file and run it as follows:
+   ```powershell
+   ➜  AirBnB_clone_v2 git:(master) ✗ ./console.py
+   ```
+
+4. When this command is run the following prompt should appear:
+   ```
+   (hbnb)
+   ```
+
+5. This prompt designates that you are in the "HBnB" console. There are a variety of commands available within the console program.
+
+### Supported Commands
+
+These are commands that can be executed by the command interpreter. They have the format `command [argument]...` but you could also use the format `Model.command([argument]...)`, with the exception of the first 3 commands below.
+
+| Format | Description |
+|:-|:-|
+| `help [command]` | Prints helpful information about a command (`command`). If `command` is not provided, it prints the help menu. |
+| `quit` | Closes the command interpreter. |
+| `EOF` | Closes the command interpreter. |
+| `create Model [prop_key=prop_value]...` | Creates a new instance of the `Model` class with the given properties. `prop_value` can be a double-quoted string with double-quotes escaped and spaces replaced with underscores. `prop_value` can also be a float or integer. |
+| `count Model` | Prints the number of instances of the `Model` class. |
+| `show Model id` | Prints the string representation of an instance of the `Model` class with the given `id`. |
+| `destroy Model id` | Deletes an instance of the `Model` class with the given `id`. |
+| `all [Model]` | Prints a list containing the string representation of all instances of the `Model` class. `Model` is optional and if it isn't provided, all the availble objects are printed. |
+| `update Model id attr_name attr_value` | Updates an instance of the `Model` class with the given `id` by assigning the attribute value `attr_value` to its attribute named `attr_name`. Attributes having the names `__class__`, `id`, `created_at`, and `updated_at` are silently ignored. |
+| `update Model id dict_repr` | Updates an instance of `Model` having the given `id` by storing the key, value pairs in the given `dict_repr` dictionary as its attributes. The keys `__class__`, `id`, `created_at`, and `updated_at` are silently ignored. |
+<br>
+
+### Supported Models
+
+These are the models that are currently available.
+
+| Class | Description |
+|:-|:-|
+| BaseModel | A(n abstract) class that represents the base class for all models (all models are instances of this class). |
+| User | Represents a user account. |
+| State | Represents the geographical state in which a _User_ lives or a _City_ belongs to. |
+| City | Represents an urban area in a _State_. |
+| Amenity | Represents a useful feature of a _Place_. |
+| Place | Represents a building containing rooms that can be rented by a _User_. |
+| Review | Represents a review of a _Place_. |
+
+### Environment Variables
+
++ `HBNB_ENV`: The running environment. It can be `dev` or `test`.
++ `HBNB_MYSQL_USER`: The MySQL server username.
++ `HBNB_MYSQL_PWD`: The MySQL server password.
++ `HBNB_MYSQL_HOST`: The MySQL server hostname.
++ `HBNB_MYSQL_DB`: The MySQL server database name.
++ `HBNB_TYPE_STORAGE`: The type of storage used. It can be `file` (using `FileStorage`) or `db` (using `DBStorage`).
+
+### Examples
+
+<h3>Primary Command Syntax</h3>
+
+###### Example 0: Create an object
+Usage: create <class_name>
 ```
-drfre@ubuntu:~AirBnB_clone$ ./console.py
-(hbnb) 
+(hbnb) create BaseModel
 ```
-
-### Usage
-
-These are lists of commands that can be interpreted by the terminal.
-
-| Command | Syntax | Alternate Syntax | Function |
-| --- | --- | --- | --- |
-| create | `create <class name>` | `<class name>.create()` | Creates a new instance of the class |
-| show | `show <class name> <id>` | `<class name>.show(<id>)` | Prints the string representation of an instance based on the class name |
-| destroy | `destroy <class name> <id>` | `<class name>.destroy(<id>)` | Deletes an instance based on the class name and id |
-| all | `all` or `all <class name>` | `<class name>.all()` | Prints all string representation of all instances based or not on the class name |
-| update | `update <class name> <id> <attribute name> <attribute value>` | `<class name>.update(<id>, <attribute name>, <attribute value>)` or `<class name>.update(<id>, <dictionary representation>)` | Updates an instance based on the class name and id by adding or updating attribute (save the change into the JSON file |
-| quit | `quit` | (none) | Exits the console |
-| EOF | `Ctrl-D` | (none) | Same as `quit`, exits the console |
-
-### Execution
-
-Execution in `interactive` and `non-interactive` modes.
-
-#### 1. Interactive Mode
 ```
-drfre@ubuntu:~AirBnB_clone$ ./console.py
-(hbnb) help
-
-Documented commands (type help <topic>):
-========================================
-EOF  all  count  create  destroy  help  quit  show  update
+(hbnb) create BaseModel
+3aa5babc-efb6-4041-bfe9-3cc9727588f8
 (hbnb)
 ```
 
-#### 2. Non-interactive Mode
-```
-drfre@ubuntu:~AirBnB_clone$ echo "help" | ./console.py
-(hbnb)
+###### Example 1: Show an object
+Usage: show <class_name> <_id>
 
-Documented commands (type help <topic>):
-========================================
-EOF  all  count  create  destroy  help  quit  show  update
-(hbnb) 
-drfre@ubuntu:~AirBnB_clone$
 ```
-```
-drfre@ubuntu:~AirBnB_clone$ cat test_help
-help
-drfre@ubuntu:~AirBnB_clone$
-drfre@ubuntu:~AirBnB_clone$ cat test_help | ./console.py
-(hbnb)
-
-Documented commands (type help <topic>):
-========================================
-EOF  all  count  create  destroy  help  quit  show  update
-(hbnb) 
-drfre@ubuntu:~AirBnB_clone$
-```
-
-### Example
-
-Here are some examples of the terminal usage.
-
-#### 1. Creating an instance of a class
-```
-(hbnb) create User
-c2e7de07-4c19-4ada-ba23-323cd5c26a5e
-(hbnb)
-```
-```
-(hbnb) User.create()
-463d9c0f-b356-4f79-9ace-b91374503231
-(hbnb)
-```
-```
-(hbnb) all
-["[User] (c2e7de07-4c19-4ada-ba23-323cd5c26a5e) {'id': 'c2e7de07-4c19-4ada-ba23-323cd5c26a5e', 'created_at': datetime.datetime(2022, 1, 28, 12, 16, 27, 752995), 'updated_at': datetime.datetime(2022, 1, 28, 12, 16, 27, 753136)}", "[User] (463d9c0f-b356-4f79-9ace-b91374503231) {'id': '463d9c0f-b356-4f79-9ace-b91374503231', 'created_at': datetime.datetime(2022, 1, 28, 12, 16, 31, 593480), 'updated_at': datetime.datetime(2022, 1, 28, 12, 16, 31, 593541)}"]
-```
-
-#### 2. Counting number of instances of a class
-```
-(hbnb) count User
-2
-(hbnb)
-```
-```
-(hbnb) User.count()
-2
+(hbnb) show BaseModel 3aa5babc-efb6-4041-bfe9-3cc9727588f8
+[BaseModel] (3aa5babc-efb6-4041-bfe9-3cc9727588f8) {'id': '3aa5babc-efb6-4041-bfe9-3cc9727588f8', 'created_at': datetime.datetime(2020, 2, 18, 14, 21, 12, 96959),
+'updated_at': datetime.datetime(2020, 2, 18, 14, 21, 12, 96971)}
 (hbnb)
 ```
 
-#### 3. Showing a single instance of a class
-```
-(hbnb) show User c2e7de07-4c19-4ada-ba23-323cd5c26a5e
-[User] (c2e7de07-4c19-4ada-ba23-323cd5c26a5e) {'id': 'c2e7de07-4c19-4ada-ba23-323cd5c26a5e', 'created_at': datetime.datetime(2022, 1, 28, 12, 16, 27, 752995), 'updated_at': datetime.datetime(2022, 1, 28, 12, 16, 27, 753136)}
-(hbnb)
-```
-```
-(hbnb) User.show("c2e7de07-4c19-4ada-ba23-323cd5c26a5e")
-[User] (c2e7de07-4c19-4ada-ba23-323cd5c26a5e) {'id': 'c2e7de07-4c19-4ada-ba23-323cd5c26a5e', 'created_at': datetime.datetime(2022, 1, 28, 12, 16, 27, 752995), 'updated_at': datetime.datetime(2022, 1, 28, 12, 16, 27, 753136)}
-(hbnb)
-```
+###### Example 2: Destroy an object
 
-#### 4. Destroying instances of a class
+Usage: destroy <class_name> <_id>
 ```
-(hbnb) destroy User c2e7de07-4c19-4ada-ba23-323cd5c26a5e
-(hbnb)
-(hbnb) all
-["[User] (463d9c0f-b356-4f79-9ace-b91374503231) {'id': '463d9c0f-b356-4f79-9ace-b91374503231', 'created_at': datetime.datetime(2022, 1, 28, 12, 16, 31, 593480), 'updated_at': datetime.datetime(2022, 1, 28, 12, 16, 31, 593541)}"]
-```
-```
-(hbnb) User.destroy("463d9c0f-b356-4f79-9ace-b91374503231")
-(hbnb)
-(hbnb) all
-[]
+(hbnb) destroy BaseModel 3aa5babc-efb6-4041-bfe9-3cc9727588f8
+(hbnb) show BaseModel 3aa5babc-efb6-4041-bfe9-3cc9727588f8
+** no instance found **
 (hbnb)
 ```
+###### Example 3: Update an object
+Usage: update <class_name> <_id>
+```
+(hbnb) update BaseModel b405fc64-9724-498f-b405-e4071c3d857f first_name "person"
+(hbnb) show BaseModel b405fc64-9724-498f-b405-e4071c3d857f
+[BaseModel] (b405fc64-9724-498f-b405-e4071c3d857f) {'id': 'b405fc64-9724-498f-b405-e4071c3d857f', 'created_at': datetime.datetime(2020, 2, 18, 14, 33, 45, 729889),
+'updated_at': datetime.datetime(2020, 2, 18, 14, 33, 45, 729907), 'first_name': 'person'}
+(hbnb)
+```
+<h3>Alternative Syntax</h3>
 
-#### 5. Showing all instances of all/specific class
-```
-(hbnb) all
-["[User] (7acd5e69-3260-4906-8757-2f77a16fe005) {'id': '7acd5e69-3260-4906-8757-2f77a16fe005', 'created_at': datetime.datetime(2022, 1, 28, 12, 24, 40, 680563), 'updated_at': datetime.datetime(2022, 1, 28, 12, 24, 40, 680657)}", "[User] (841765ce-3727-49b8-8ce5-c0e454a58dac) {'id': '841765ce-3727-49b8-8ce5-c0e454a58dac', 'created_at': datetime.datetime(2022, 1, 28, 12, 24, 42, 915639), 'updated_at': datetime.datetime(2022, 1, 28, 12, 24, 42, 915702)}", "[BaseModel] (5afc1ebe-20f9-41ff-b51c-859f08e6e0ac) {'id': '5afc1ebe-20f9-41ff-b51c-859f08e6e0ac', 'created_at': datetime.datetime(2022, 1, 28, 12, 24, 57, 197423), 'updated_at': datetime.datetime(2022, 1, 28, 12, 24, 57, 197535)}", "[Place] (eb3bf04e-feb8-459e-bceb-fa80cb2bcb1c) {'id': 'eb3bf04e-feb8-459e-bceb-fa80cb2bcb1c', 'created_at': datetime.datetime(2022, 1, 28, 12, 25, 2, 940350), 'updated_at': datetime.datetime(2022, 1, 28, 12, 25, 2, 940417)}"]
-(hbnb)
-(hbnb) all User
-["[User] (7acd5e69-3260-4906-8757-2f77a16fe005) {'id': '7acd5e69-3260-4906-8757-2f77a16fe005', 'created_at': datetime.datetime(2022, 1, 28, 12, 24, 40, 680563), 'updated_at': datetime.datetime(2022, 1, 28, 12, 24, 40, 680657)}", "[User] (841765ce-3727-49b8-8ce5-c0e454a58dac) {'id': '841765ce-3727-49b8-8ce5-c0e454a58dac', 'created_at': datetime.datetime(2022, 1, 28, 12, 24, 42, 915639), 'updated_at': datetime.datetime(2022, 1, 28, 12, 24, 42, 915702)}"]
-```
+###### Example 0: Show all User objects
+Usage: <class_name>.all()
 ```
 (hbnb) User.all()
-["[User] (7acd5e69-3260-4906-8757-2f77a16fe005) {'id': '7acd5e69-3260-4906-8757-2f77a16fe005', 'created_at': datetime.datetime(2022, 1, 28, 12, 24, 40, 680563), 'updated_at': datetime.datetime(2022, 1, 28, 12, 24, 40, 680657)}", "[User] (841765ce-3727-49b8-8ce5-c0e454a58dac) {'id': '841765ce-3727-49b8-8ce5-c0e454a58dac', 'created_at': datetime.datetime(2022, 1, 28, 12, 24, 42, 915639), 'updated_at': datetime.datetime(2022, 1, 28, 12, 24, 42, 915702)}"]
-(hbnb)
-(hbnb) Place.all()
-["[Place] (eb3bf04e-feb8-459e-bceb-fa80cb2bcb1c) {'id': 'eb3bf04e-feb8-459e-bceb-fa80cb2bcb1c', 'created_at': datetime.datetime(2022, 1, 28, 12, 25, 2, 940350), 'updated_at': datetime.datetime(2022, 1, 28, 12, 25, 2, 940417)}"]
-(hbnb)
+["[User] (99f45908-1d17-46d1-9dd2-b7571128115b) {'updated_at': datetime.datetime(2020, 2, 19, 21, 47, 34, 92071), 'id': '99f45908-1d17-46d1-9dd2-b7571128115b', 'created_at': datetime.datetime(2020, 2, 19, 21, 47, 34, 92056)}", "[User] (98bea5de-9cb0-4d78-8a9d-c4de03521c30) {'updated_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134362), 'id': '98bea5de-9cb0-4d78-8a9d-c4de03521c30', 'created_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134343)}"]
 ```
 
-#### 6. Update an instance of a class
+###### Example 1: Destroy a User
+Usage: <class_name>.destroy(<_id>)
 ```
-(hbnb) Place.all()
-["[Place] (eb3bf04e-feb8-459e-bceb-fa80cb2bcb1c) {'id': 'eb3bf04e-feb8-459e-bceb-fa80cb2bcb1c', 'created_at': datetime.datetime(2022, 1, 28, 12, 25, 2, 940350), 'updated_at': datetime.datetime(2022, 1, 28, 12, 25, 2, 940417)}"]
+(hbnb) User.destroy("99f45908-1d17-46d1-9dd2-b7571128115b")
 (hbnb)
-(hbnb) update Place location "Urban"
-(hbnb)
-(hbnb) Place.all()
-["[Place] (eb3bf04e-feb8-459e-bceb-fa80cb2bcb1c) {'id': 'eb3bf04e-feb8-459e-bceb-fa80cb2bcb1c', 'created_at': datetime.datetime(2022, 1, 28, 12, 25, 2, 940350), 'updated_at': datetime.datetime(2022, 1, 28, 12, 27, 20, 728641), 'location': 'Urban'}"]
-(hbnb)
+(hbnb) User.all()
+(hbnb) ["[User] (98bea5de-9cb0-4d78-8a9d-c4de03521c30) {'updated_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134362), 'id': '98bea5de-9cb0-4d78-8a9d-c4de03521c30', 'created_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134343)}"]
 ```
+###### Example 2: Update User (by attribute)
+Usage: <class_name>.update(<_id>, <attribute_name>, <attribute_value>)
 ```
-(hbnb) City.all()
-["[City] (bd88ab39-c90c-4efe-bf0e-98555347efa9) {'id': 'bd88ab39-c90c-4efe-bf0e-98555347efa9', 'created_at': datetime.datetime(2022, 1, 28, 12, 28, 41, 419411), 'updated_at': datetime.datetime(2022, 1, 28, 12, 28, 41, 419616)}"]
+(hbnb) User.update("98bea5de-9cb0-4d78-8a9d-c4de03521c30", name "Todd the Toad")
 (hbnb)
-(hbnb) City.update("bd88ab39-c90c-4efe-bf0e-98555347efa9", "population_count", 150000)
-(hbnb)
-(hbnb) City.all()
-["[City] (bd88ab39-c90c-4efe-bf0e-98555347efa9) {'id': 'bd88ab39-c90c-4efe-bf0e-98555347efa9', 'created_at': datetime.datetime(2022, 1, 28, 12, 28, 41, 419411), 'updated_at': datetime.datetime(2022, 1, 28, 12, 30, 52, 99814), 'population_count': 150000}"]
+(hbnb) User.all()
+(hbnb) ["[User] (98bea5de-9cb0-4d78-8a9d-c4de03521c30) {'updated_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134362), 'id': '98bea5de-9cb0-4d78-8a9d-c4de03521c30', 'name': 'Todd the Toad', 'created_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134343)}"]
 ```
+###### Example 3: Update User (by dictionary)
+Usage: <class_name>.update(<_id>, <dictionary>)
 ```
-(hbnb) Review.all()
-["[Review] (9a97d116-8edf-4478-80e0-b57ad4a6406d) {'id': '9a97d116-8edf-4478-80e0-b57ad4a6406d', 'created_at': datetime.datetime(2022, 1, 28, 16, 37, 17, 970265), 'updated_at': datetime.datetime(2022, 1, 28, 16, 37, 17, 970393)}"]
+(hbnb) User.update("98bea5de-9cb0-4d78-8a9d-c4de03521c30", {'name': 'Fred the Frog', 'age': 9})
 (hbnb)
-(hbnb) Review.update("9a97d116-8edf-4478-80e0-b57ad4a6406d", {'stars': 4.685, 'total_view': 5876, 'user_name': "Kidus Worku"})
-(hbnb)
-(hbnb) Review.all()
-["[Review] (9a97d116-8edf-4478-80e0-b57ad4a6406d) {'id': '9a97d116-8edf-4478-80e0-b57ad4a6406d', 'created_at': datetime.datetime(2022, 1, 28, 16, 37, 17, 970265), 'updated_at': datetime.datetime(2022, 1, 28, 17, 7, 50, 333219), 'stars': 4.685, 'total_view': 5876, 'user_name': 'Kidus Worku'}"]
+(hbnb) User.all()
+(hbnb) ["[User] (98bea5de-9cb0-4d78-8a9d-c4de03521c30) {'updated_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134362), 'name': 'Fred the Frog', 'age': 9, 'id': '98bea5de-9cb0-4d78-8a9d-c4de03521c30', 'created_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134343)}"]
 ```
+<br>
 
-#### Overall Usage Example
+<!-- ## Testing -->
 
-```
-drfre@ubuntu:~AirBnB_clone$ ./console.py
-(hbnb) create BaseModel
-ae76953c-4f05-4e14-9659-e599cd45a229
-(hbnb)
-(hbnb) create Place
-4e70b774-e1ce-45c6-8993-45e10ce48a46
-(hbnb)
-(hbnb) show BaseModel 4e70b774-e1ce-45c6-8993-45e10ce48a46
-** no instance found **
-(hbnb)
-(hbnb) show BaseModel ae76953c-4f05-4e14-9659-e599cd45a229
-[BaseModel] (ae76953c-4f05-4e14-9659-e599cd45a229) {'id': 'ae76953c-4f05-4e14-9659-e599cd45a229', 'created_at': datetime.datetime(2022, 1, 26, 19, 50, 46, 400369), 'updated_at': datetime.datetime(2022, 1, 26, 19, 50, 46, 400501)}
-(hbnb)
-(hbnb) create NonExistingClass
-** class doesn't exist **
-(hbnb) create
-** class name missing **
-(hbnb) show
-** class name missing **
-(hbnb) show NonExistingClass
-** class doesn't exist **
-(hbnb) show BaseModel
-** instance id missing **
-(hbnb) destroy BaseModel
-** instance id missing **
-(hbnb)
-(hbnb) all
-["[BaseModel] (ae76953c-4f05-4e14-9659-e599cd45a229) {'id': 'ae76953c-4f05-4e14-9659-e599cd45a229', 'created_at': datetime.datetime(2022, 1, 26, 19, 50, 46, 400369), 'updated_at': datetime.datetime(2022, 1, 26, 19, 50, 46, 400501)}", "[Place] (4e70b774-e1ce-45c6-8993-45e10ce48a46) {'id': '4e70b774-e1ce-45c6-8993-45e10ce48a46', 'created_at': datetime.datetime(2022, 1, 26, 19, 50, 49, 59166), 'updated_at': datetime.datetime(2022, 1, 26, 19, 50, 49, 59232)}"]
-(hbnb)
-(hbnb) destroy BaseModel ae76953c-4f05-4e14-9659-e599cd45a229
-(hbnb)
-(hbnb) all
-["[Place] (4e70b774-e1ce-45c6-8993-45e10ce48a46) {'id': '4e70b774-e1ce-45c6-8993-45e10ce48a46', 'created_at': datetime.datetime(2022, 1, 26, 19, 50, 49, 59166), 'updated_at': datetime.datetime(2022, 1, 26, 19, 50, 49, 59232)}"]
-(hbnb)
-(hbnb) create BaseModel
-c37c1765-bd84-4890-90b4-690afffb2b3d
-(hbnb)
-(hbnb) all
-["[Place] (4e70b774-e1ce-45c6-8993-45e10ce48a46) {'id': '4e70b774-e1ce-45c6-8993-45e10ce48a46', 'created_at': datetime.datetime(2022, 1, 26, 19, 50, 49, 59166), 'updated_at': datetime.datetime(2022, 1, 26, 19, 50, 49, 59232)}", "[BaseModel] (c37c1765-bd84-4890-90b4-690afffb2b3d) {'id': 'c37c1765-bd84-4890-90b4-690afffb2b3d', 'created_at': datetime.datetime(2022, 1, 26, 19, 54, 52, 766133), 'updated_at': datetime.datetime(2022, 1, 26, 19, 54, 52, 766219)}"]
-(hbnb) all BaseModel
-["[BaseModel] (c37c1765-bd84-4890-90b4-690afffb2b3d) {'id': 'c37c1765-bd84-4890-90b4-690afffb2b3d', 'created_at': datetime.datetime(2022, 1, 26, 19, 54, 52, 766133), 'updated_at': datetime.datetime(2022, 1, 26, 19, 54, 52, 766219)}"]
-(hbnb)
-(hbnb) update
-** class name missing **
-(hbnb) update BaseModel
-** instance id missing **
-(hbnb) update BaseModel 4e70b774-e1ce-45c6-8993-45e10ce48a46
-** no instance found **
-(hbnb) update BaseModel c37c1765-bd84-4890-90b4-690afffb2b3d
-** attribute name missing **
-(hbnb) update BaseModel c37c1765-bd84-4890-90b4-690afffb2b3d email
-** value missing **
-(hbnb) update BaseModel c37c1765-bd84-4890-90b4-690afffb2b3d email "drfre@gmail.com"
-(hbnb)
-(hbnb) all
-["[Place] (4e70b774-e1ce-45c6-8993-45e10ce48a46) {'id': '4e70b774-e1ce-45c6-8993-45e10ce48a46', 'created_at': datetime.datetime(2022, 1, 26, 19, 50, 49, 59166), 'updated_at': datetime.datetime(2022, 1, 26, 19, 50, 49, 59232)}", "[BaseModel] (c37c1765-bd84-4890-90b4-690afffb2b3d) {'id': 'c37c1765-bd84-4890-90b4-690afffb2b3d', 'created_at': datetime.datetime(2022, 1, 26, 19, 54, 52, 766133), 'updated_at': datetime.datetime(2022, 1, 26, 19, 56, 36, 394426), 'email': 'drfre@gmail.com'}"]
-(hbnb)
-(hbnb) help
-
-Documented commands (type help <topic>):
-========================================
-EOF  all  count  create  destroy  help  quit  show  update
-
-(hbnb)
-(hbnb) help quit
-Quit command to exit the program
-(hbnb)
-(hbnb) quit
-drfre@ubuntu:~AirBnB_clone$
-drfre@ubuntu:~AirBnB_clone$ cat file.json ; echo ""
-{"Place.4e70b774-e1ce-45c6-8993-45e10ce48a46": {"id": "4e70b774-e1ce-45c6-8993-45e10ce48a46", "created_at": "2022-01-26T19:50:49.059166", "updated_at": "2022-01-26T19:50:49.059232", "__class__": "Place"}, "BaseModel.c37c1765-bd84-4890-90b4-690afffb2b3d": {"id": "c37c1765-bd84-4890-90b4-690afffb2b3d", "created_at": "2022-01-26T19:54:52.766133", "updated_at": "2022-01-26T19:56:36.394426", "email": "drfre@gmail.com", "__class__": "BaseModel"}}
-drfre@ubuntu:~AirBnB_clone$
-```
-
-### Testing
-
-To run all the `unittests` run `python3 -m unittest discover tests`:
-```
-drfre@ubuntu:~AirBnB_clone$ python3 -m unittest discover tests
-```
-
-Or non-interactively by running `echo "python3 -m unittest discover tests" | bash`:
-```
-drfre@ubuntu:~AirBnB_clone$ echo "python3 -m unittest discover tests" | bash
-```
-
+**NOTE:** Before you push any commit, please run the script `./test.bash` to ensure that no tests are failing and your code complies with this project's styling standard.
